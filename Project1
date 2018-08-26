@@ -1,1 +1,159 @@
-all related files
+\documentclass[%
+ reprint,
+ nobalancelastpage,
+%superscriptaddress,
+%groupedaddress,
+%unsortedaddress,
+%runinaddress,
+%frontmatterverbose, 
+%preprint,
+%showpacs,preprintnumbers,
+%nofootinbib,
+%nobibnotes,
+%bibnotes,
+ amsmath,amssymb,
+ aps,
+%pra,
+%prb,
+%rmp,
+%prstab,
+%prstper,
+%floatfix,
+]{revtex4-1}
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{hyperref}% add hypertext capabilities
+\usepackage{url}% url links
+\usepackage{bm}% bold math
+\usepackage{booktabs}% tables
+\usepackage{listings}% codelisting
+\usepackage{subcaption}% create subplots
+\usepackage[labelformat=parens,labelsep=quad,skip=3pt]{caption}% caption plots
+\usepackage{blindtext}% lorem ipsum...
+
+
+\begin{document}
+
+\title{Project 1 - FYS3150}
+
+\author{Sajjad Ahmadigoltapeh, Einar Aurbakken, Bastian Skjelstad}
+
+\affiliation{email-address: sajjadah@uio.no, eanorway@gmail.com}
+
+\date{\today}
+\begin{abstract}
+The project 1 is an introduction to numerical solution of second order differential equation via using C++ programming language. In section 1a) one dimensional Poisson equation with Dirichlet boundary conditions was solved, then in section 1b) a general solution for solving the linear equations was recommended. Therafter, the number of floating point operations for this specific tri-diagonal matrix was calculated and finally relative error was estimated and the results were compared by the results of LU decomposition. 
+\end{abstract} 
+
+\maketitle
+
+\section{\label{sec:Int}Introduction}
+The purpose of this project is learning to solve differential equations by applying the principles of linear algebra. Furthermore, writing arrays in C++ and working with matrices and vectors was another outcome of this project. Namely:
+
+\begin{equation}
+	u''(x) = f(x), \qquad x \in (0,1), \qquad u(0)=u(1)=0
+\end{equation}
+
+At first step a method of discretizing the domain of $x$ is applied, and the second order differential equation approximated with a linear equation. Using Taylor expansion let approximate above mentioned equation.
+Three different algorithms i.e. tridiagonal matrix solver, special tridiagonal matrix solver and a LU decomposition were applied.\\
+ Then different algorithm were compared by finding number of floating point operations required to find $v(x)$, and timing it for $n = 10, 100, 1000$ grid points.\\
+To estimate the accuracy of applied methods $f(x)$ was found via numerical and exact solution and the results were compared.
+
+\section{\label{sec:Met} methods}
+
+\subsection{\label{sec:Pro} Stating the problem}
+One-dimensional Poisson-equation with Dirichlet boundary conditions  
+By discretizing we have $u(x)$ as $u_{i} = u(x_{i})$ with $x = ih$, \\$i = 0,1,2,...,n+1$. The step length is given as \\ $h = 1/(n+1)$. The approximation is defined as $u_{i}$ as $v_{i}$, with and boundary conditions of $v_{0} = v_{n+1} = 0$, then we have:
+
+\begin{equation}
+	-\frac{v_{i+1} + v_{i-1} - 2v_{i}}{h^{2}} = f_{i} \qquad \text{for } i = 1,2,...,n
+\end{equation}
+
+where $f_{i} = f(x_{i})$. This shows a set of $n$ linear equations which can be rewrited as
+
+\begin{equation}
+	\bm{A}\bm{v} = \bm{\tilde{b}}
+\end{equation}
+
+where A is a tridiagonal matrix
+
+\begin{equation}
+A =
+\begin{pmatrix}
+  2 & -1 & 0 & \cdots & \cdots & 0 \\
+  -1 & 2 &  -1 & 0 &\cdots & \cdots \\
+  0 & -1 & 2 & -1 & 0 & \cdots \\
+  \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+  0 & \cdots & \cdots & -1 & 2 & -1 \\
+  0 & \cdots & \cdots & \cdots & -1 & 2 
+\end{pmatrix}
+\end{equation}
+
+and $\tilde{b_{i}} = -h^{2}f_{i}$. Now the set of equations for $v_{i}$ should be solved. In this case the source term will be $f(x) = 100e^{-10x}$, and the equation has an analytical solution $u(x) = 1 - (1-e^{-10})x - e^{-10x}$.
+
+\subsection{\label{sec:Gen}General algorithm}
+For general tridiagonal matrix $\bm{a}$ is a vector of length $n$ and $\bm{b}$ and $\bm{c}$ vectors of length $n-1$. Now linear equation is: 
+
+\begin{equation}
+	\bm{A}\bm{v} = \begin{pmatrix}
+  a_{1} & b_{1} & 0 & \cdots & \cdots & 0 \\
+  c_{1} & a_{2} &  b_{2} & 0 &\cdots & \cdots \\
+  0 & c_{2} & a_{3} & b_{3} & 0 & \cdots \\
+  \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+  0 & \cdots & \cdots & c_{n-2} & a_{n-1} & b_{n-1} \\
+  0 & \cdots & \cdots & \cdots & c_{n-1} & a_{n} 
+\end{pmatrix}
+\begin{pmatrix}
+	v_{1} \\
+	v_{2} \\
+	\vdots \\
+	\\
+	\vdots\\
+	v_{n}
+\end{pmatrix} = 
+\begin{pmatrix}
+	d_{1} \\
+	d_{2} \\
+	\vdots \\
+	\\
+	\vdots\\
+	d_{n}
+\end{pmatrix}
+\end{equation}
+
+Using Gaussian elimination with forward substitution we have
+
+\begin{equation}
+	\bm{A}\bm{v} = \begin{pmatrix}
+  \tilde{a_{1}} & b_{1} & 0 & \cdots & \cdots & 0 \\
+  0 & \tilde{a_{2}} &  b_{2} & 0 &\cdots & \cdots \\
+  0 & 0 & \tilde{a_{3}} & b_{3} & 0 & \cdots \\
+  \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+  0 & \cdots & \cdots & 0 & \tilde{a_{n-1}} & b_{n-1} \\
+  0 & \cdots & \cdots & \cdots & 0 & a_{n} 
+\end{pmatrix}
+\begin{pmatrix}
+	v_{1} \\
+	v_{2} \\
+	\vdots \\
+	\\
+	\vdots\\
+	v_{n}
+\end{pmatrix} = 
+\begin{pmatrix}
+	\tilde{d_{1}} \\
+	\tilde{d_{2}} \\
+	\vdots \\
+	\\
+	\vdots\\
+	\tilde{d_{n}}
+\end{pmatrix}
+\end{equation}
+
+where $\tilde{a_{1}} = a_{1}$ and 
+
+\begin{equation}
+\tilde{a_{i}} = a_{i} - b_{i-1}c_{i-1}/\tilde{a_{i-1}}, \qquad i=2,3,...,n 
+\end{equation}
+\end{document}
