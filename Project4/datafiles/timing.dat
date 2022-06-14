@@ -1,0 +1,4 @@
+non-parallelized: 10^6 MC cycles: 20x20: T = 2.2 - 2.4: dt = 0.005: 7.80953e+08
+    parallelized: 10^6 MC cycles: 20x20: T = 2.2 - 2.4: dt = 0.005: 2.83043e+08
+non-parallelized: 10^6 MC cycles: 40x40: T = 2.2 - 2.4: dt = 0.005: 3.10048e+09
+    parallelized: 10^6 MC cycles: 40x40: T = 2.2 - 2.4: dt = 0.005: 1.11926e+09

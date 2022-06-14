@@ -1,0 +1,4 @@
+[Command: python -u /Users/phb/Documents/GitHub/fys4150/Project4/main_code/4d_probs.py]
+('Variance of the energy at T = 2.4', 3249.1117490197271)
+('Variance of the energy at T = 1.0', 9.3181644977359745)
+[Finished in 51.589s]
