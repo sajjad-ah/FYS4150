@@ -1,0 +1,4 @@
+matrix size     time LU     time gen_tri_id
+10              222         1
+100             627         5
+1000            3524        54
