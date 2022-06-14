@@ -1,0 +1,6 @@
+num_of_iterations     iterations_per_printout   dt        num_of_planets  constant_sun(0 = no, 1 = yes)
+1000000                  1                      0.0001       2            1
+
+planet_name     x                       y                         z                       vx                      vy                      vz                       mass     (circular: 6.2831853071795862)
+earth           1   0     0  0 6.2831853071795862 0   3.00348959632e-6
+sun             0   0     0  0 0 0    1.0

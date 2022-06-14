@@ -1,0 +1,6 @@
+num_of_iterations     iterations_per_printout   dt        num_of_planets  constant_sun(0 = no, 1 = yes)
+1000000000                  1                      0.0000001       2              1
+
+planet_name     x                       y                         z                       vx                      vy                      vz                       mass
+mercury        0.3075   0    0  0 12.44 0    0.16601e-6
+sun            0   0     0  0 0 0    1.0
