@@ -1,2 +1,2 @@
 # FYS4150
-I started to write project of FYS3150
+This course gives an introduction to numerical methods for solving problems in physics and chemistry, i.e. methods for solving ordinary and partial differential equations, matrix operations and eigenvalue problems, numerical integration, Monte Carlo methods, and modeling. The course also covers a short and hands-on introduction to programming in C++ and version control with git, and provides training in how to write a scientific report.
